@@ -9,6 +9,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 // - this approach allows outer factory function to accept params
 //   which can be used by inner decorator function
 function Logger(logMessage) {
+    console.log('-= Logger =-');
     // Logger Fn will receive Person class constructor as arg
     return function (ctxFn) {
         console.log(logMessage);
@@ -16,10 +17,12 @@ function Logger(logMessage) {
     };
 }
 function WithTemplate(template, hookId) {
+    console.log('-= WithTemplate =-');
     // return function(ctxFn: Function) {
     return function (ctxFn) {
         // by naming param '_', ts knows we will not be using it, and will not complain
         // return function(_: Function) {
+        console.log('!!! Templating !!!');
         var hookEl = document.getElementById(hookId);
         var pers = new ctxFn();
         if (hookEl) {
@@ -28,13 +31,14 @@ function WithTemplate(template, hookId) {
         }
     };
 }
-// @Logger('[LOGGING]  Person')
+// decorators run from bottom up (@WithTemplate will run before @Logger)
 var Person = /** @class */ (function () {
     function Person() {
         this.name = 'Max';
         console.log('creating person ...');
     }
     Person = __decorate([
+        Logger('[LOGGING]  Person'),
         WithTemplate('Hello from <b>Person</b>', 'app')
     ], Person);
     return Person;
