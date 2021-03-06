@@ -1,3 +1,54 @@
+function PropertyDecorator(target: any, propertyName: string | Symbol) {
+  console.log('-= Property =-');
+  console.log(target, propertyName);
+}
+
+function AccessorDecorator(target: any, name: string, descriptor: PropertyDescriptor) {
+  console.log('-= Accessor =-')
+  console.log(target);
+  console.log(name);
+  console.log(descriptor);
+}
+
+function MethodDecorator(target: any, name: string, descriptor: PropertyDescriptor) {
+  console.log('-= Method =-');
+  console.log(target);
+  console.log(name);
+  console.log(descriptor);
+}
+
+function ParamDecorator(target: any, name: string | Symbol, position: number) {
+  console.log('-= Param =-');
+  console.log(target);
+  console.log(name);
+  console.log(position);
+}
+
+class Product {
+  @PropertyDecorator
+  title: string;
+  private _price: number;
+
+  @AccessorDecorator
+  set price(val: number) {
+    if (val > 0) {
+      this._price = val;
+    }
+  }
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this._price = p;
+  }
+
+  @MethodDecorator
+  getPriceWithTax(@ParamDecorator tax: number) {
+    return this._price * (1 + tax);
+  }
+}
+
+
+
 
 // Decorator factory
 // - the fn it returns is decorator
