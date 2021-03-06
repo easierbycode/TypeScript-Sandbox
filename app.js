@@ -22,6 +22,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+function Autobind(target, methodName, descriptor) {
+    var originalMethod = descriptor.value;
+    // modified propertyDescriptor
+    var adjDescriptor = {
+        configurable: true,
+        enumerable: false,
+        get: function () {
+            // binding below allows this.message (in Printer) to work correctly when
+            // button is clicked
+            var boundFn = originalMethod.bind(this);
+            return boundFn;
+        }
+    };
+    return adjDescriptor;
+}
+var Printer = /** @class */ (function () {
+    function Printer() {
+        this.message = 'This works!';
+    }
+    Printer.prototype.showMessage = function () {
+        console.log(this.message);
+    };
+    __decorate([
+        Autobind
+    ], Printer.prototype, "showMessage", null);
+    return Printer;
+}());
+var p = new Printer();
+var button = document.querySelector('button');
+button.addEventListener('click', p.showMessage);
 function PropertyDecorator(target, propertyName) {
     console.log('-= Property =-');
     console.log(target, propertyName);

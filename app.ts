@@ -1,3 +1,37 @@
+function Autobind(target: any, methodName: string | Symbol, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value;
+  // modified propertyDescriptor
+  const adjDescriptor: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+    get() {
+      // binding below allows this.message (in Printer) to work correctly when
+      // button is clicked
+      const boundFn = originalMethod.bind(this);
+      return boundFn;
+    }
+  };
+
+  return adjDescriptor;
+}
+
+class Printer {
+  message = 'This works!';
+
+  @Autobind
+  showMessage() {
+    console.log(this.message);
+  }
+}
+
+const p = new Printer();
+
+const button = document.querySelector('button')!;
+button.addEventListener('click', p.showMessage);
+
+
+
+
 function PropertyDecorator(target: any, propertyName: string | Symbol) {
   console.log('-= Property =-');
   console.log(target, propertyName);
