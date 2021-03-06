@@ -67,18 +67,27 @@ function Logger(logMessage: string) {
 function WithTemplate(template: string, hookId: string) {
   console.log('-= WithTemplate =-');
   // return function(ctxFn: Function) {
-  return function(ctxFn: any) {
+  return function<T extends { new (...args: any[]): {name:string} }>(
+    ctxFn: T
+  ) {
 
   // by naming param '_', ts knows we will not be using it, and will not complain
   // return function(_: Function) {
 
-    console.log('!!! Templating !!!');
+    return class extends ctxFn {
+      // renaming args -> _ to avoid ts nag
+      constructor(..._: any[]) {
+        super();
 
-    const hookEl = document.getElementById(hookId);
-    const pers = new ctxFn();
-    if (hookEl) {
-      hookEl.innerHTML = template;
-      hookEl.querySelector('b')!.textContent = pers.name;
+        console.log('!!! Templating !!!');
+
+        const hookEl = document.getElementById(hookId);
+        const pers = new ctxFn();
+        if (hookEl) {
+          hookEl.innerHTML = template;
+          hookEl.querySelector('b')!.textContent = pers.name;
+        }
+      }
     }
   }
 }
