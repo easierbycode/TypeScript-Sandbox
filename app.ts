@@ -10,8 +10,27 @@ function Logger(logMessage: string) {
     console.log('!!! Logging !!!');
   }
 }
+
+
+function WithTemplate(template: string, hookId: string) {
+  // return function(ctxFn: Function) {
+  return function(ctxFn: any) {
+
+  // by naming param '_', ts knows we will not be using it, and will not complain
+  // return function(_: Function) {
+
+    const hookEl = document.getElementById(hookId);
+    const pers = new ctxFn();
+    if (hookEl) {
+      hookEl.innerHTML = template;
+      hookEl.querySelector('b')!.textContent = pers.name;
+    }
+  }
+}
+
   
-@Logger('[LOGGING]  Person')
+// @Logger('[LOGGING]  Person')
+@WithTemplate('Hello from <b>Person</b>', 'app')
 class Person {
   name = 'Max';
   

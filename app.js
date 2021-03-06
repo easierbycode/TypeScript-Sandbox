@@ -15,13 +15,27 @@ function Logger(logMessage) {
         console.log('!!! Logging !!!');
     };
 }
+function WithTemplate(template, hookId) {
+    // return function(ctxFn: Function) {
+    return function (ctxFn) {
+        // by naming param '_', ts knows we will not be using it, and will not complain
+        // return function(_: Function) {
+        var hookEl = document.getElementById(hookId);
+        var pers = new ctxFn();
+        if (hookEl) {
+            hookEl.innerHTML = template;
+            hookEl.querySelector('b').textContent = pers.name;
+        }
+    };
+}
+// @Logger('[LOGGING]  Person')
 var Person = /** @class */ (function () {
     function Person() {
         this.name = 'Max';
         console.log('creating person ...');
     }
     Person = __decorate([
-        Logger('[LOGGING]  Person')
+        WithTemplate('Hello from <b>Person</b>', 'app')
     ], Person);
     return Person;
 }());
