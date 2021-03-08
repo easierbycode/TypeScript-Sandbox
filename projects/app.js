@@ -127,6 +127,7 @@ var Component = /** @class */ (function () {
     return Component;
 }());
 // ProjectItem class
+// interfaces not only defines custom object types, but can define a contract on a class
 var ProjectItem = /** @class */ (function (_super) {
     __extends(ProjectItem, _super);
     function ProjectItem(hostId, project) {
@@ -148,12 +149,24 @@ var ProjectItem = /** @class */ (function (_super) {
         enumerable: false,
         configurable: true
     });
-    ProjectItem.prototype.configure = function () { };
+    ProjectItem.prototype.dragStartHandler = function (event) {
+        console.log(event);
+    };
+    ProjectItem.prototype.dragEndHandler = function (_) {
+        console.log('!!! drag end !!!');
+    };
+    ProjectItem.prototype.configure = function () {
+        this.element.addEventListener('dragstart', this.dragStartHandler);
+        this.element.addEventListener('dragend', this.dragEndHandler);
+    };
     ProjectItem.prototype.renderContent = function () {
         this.element.querySelector('h2').textContent = this.project.title;
         this.element.querySelector('h3').textContent = this.persons + ' assigned';
         this.element.querySelector('p').textContent = this.project.description;
     };
+    __decorate([
+        Autobind
+    ], ProjectItem.prototype, "dragStartHandler", null);
     return ProjectItem;
 }(Component));
 // ProjectList class
