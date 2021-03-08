@@ -28,3 +28,9 @@ class ProjectState {
     }
 }
 ```
+
+* abstract classes cannot be instantiated
+
+* an abstract method in a class does not define implementation, but requires classes which extend it to
+
+* protected members cannot be accessed from outside the class but can be access from any subclass
