@@ -1,6 +1,9 @@
 {
+    "include": ["./projects/*"],
     "compilerOptions": {
         "experimentalDecorators": true,
-        "target": "ES6"
+        "target": "ES6",
+        "outFile": "./projects/bundle.js",
+        "module": "amd"
     }
 }
